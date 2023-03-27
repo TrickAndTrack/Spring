@@ -57,3 +57,56 @@ public class AppConfig {
 In this example, the UserService is loosely coupled with the UserRepository interface because it only depends on the interface, not a specific implementation.
 The implementation is injected at runtime by Spring using the @Autowired annotation on the constructor of UserService. 
 This allows for flexibility in swapping out different implementations of UserRepository without affecting the UserService.
+
+## 2 Types of IOC container 
+### BeanFactory :
+-it is an interface define in org.springframework.beans.factory.BeanFactory
+-support for dependency injection.
+-it is based on factory design pattern.
+-support to create a standalone application.
+### Example 
+```java
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
+
+public class BeanFactoryExample {
+    public static void main(String[] args) {
+        // Load the bean definitions from an XML file
+        BeanFactory factory = new XmlBeanFactory(new ClassPathResource("beans.xml"));
+
+        // Get an instance of a bean
+        MyBean bean = (MyBean) factory.getBean("myBean");
+        bean.doSomething();
+    }
+}
+
+```
+In this example, we use the XmlBeanFactory to create an IoC container from an XML file containing the bean definitions. We then retrieve an instance of the MyBean class from the container using the getBean() method.
+
+### ApplicationContext :
+it is an interface defined in org. spring framework.context.ApplicationContext
+-Application Context extends Bean factory.
+-it is based on a factory design pattern.
+-support to create standalone applications and web application.
+
+### Example
+```java
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class ApplicationContextExample {
+    public static void main(String[] args) {
+        // Load the bean definitions from an XML file
+        ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+
+        // Get an instance of a bean
+        MyBean bean = (MyBean) context.getBean("myBean");
+        bean.doSomething();
+    }
+}
+
+```
+In this example, we use the ClassPathXmlApplicationContext to create an IoC container from an XML file containing the bean definitions. We then retrieve an instance of the MyBean class from the container using the getBean() method.
+
+Both examples demonstrate the basic usage of IoC containers in Spring. The main difference between the two is that the BeanFactory provides lazy initialization of beans, while the ApplicationContext provides eager initialization of beans by default.
