@@ -188,6 +188,8 @@ Hello, my name is John Doe and I am 30 years old.
 One of its key features in Spring framework is dependency injection, which is a design pattern that allows objects to be created without explicitly specifying all of their dependencies.
 it is a design pattern that removes the dependency between the object. dependency injection creates the loosely coupled object.
 
+> **_Note:_** (IoC) is a general concept, Dependency Injection is merely one concrete example of Inversion of Control.
+
 ## Here's an example of how dependency injection works in Spring:
 
 Suppose we have a class called UserService that needs an instance of UserRepository to perform database operations. Without dependency injection, we would have to create an instance of UserRepository inside UserService:
@@ -285,4 +287,14 @@ When we run the Main class, the output will be:
 Name: John Doe
 Age: 20
 ```
+
+> **_NOTE:_**  we have disadvantage in core java that is we need to create object using new keyword. for that reasone we create loose couple object.
+> employee emp: Example of a loose couple of objects	
+> tight couple object: we use new keyword
+> dependency part translates into an association between two classes.For example, class A is dependent on class B.
+> Now, let's look at the second part, injection. All this means is, that class B will get injected into class A by the IoC.
+
+
+
+
 
