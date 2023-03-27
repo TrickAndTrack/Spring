@@ -295,6 +295,43 @@ Age: 20
 > Now, let's look at the second part, injection. All this means is, that class B will get injected into class A by the IoC.
 
 
+# XML VS ANNOTATION
 
+#### annotauion
+```java\
+@Configuration
+public class AppConfig {
+    @Bean
+    public Engine engine() {
+        return new Engine();
+    }
 
+    @Bean
+    public Transmission transmission() {
+        return new Transmission();
+    }
+
+    @Bean
+    public Car car() {
+        return new Car(engine(), transmission());
+    }
+}
+```
+##### xml
+```java
+<!-- applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="engine" class="com.example.Engine" />
+    <bean id="transmission" class="com.example.Transmission" />
+    <bean id="car" class="com.example.Car">
+        <constructor-arg ref="engine" />
+        <constructor-arg ref="transmission" />
+    </bean>
+
+</beans>
+
+```
 
