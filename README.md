@@ -181,3 +181,108 @@ Hello, my name is John Doe and I am 30 years old.
 
 
 > **_Note:_** The ApplicationContext includes all functionality of the BeanFactory, It is generally recommended over BeanFactory
+
+
+# Spring - Dependency Injection
+
+One of its key features in Spring framework is dependency injection, which is a design pattern that allows objects to be created without explicitly specifying all of their dependencies.
+it is a design pattern that removes the dependency between the object. dependency injection creates the loosely coupled object.
+
+## Here's an example of how dependency injection works in Spring:
+
+Suppose we have a class called UserService that needs an instance of UserRepository to perform database operations. Without dependency injection, we would have to create an instance of UserRepository inside UserService:
+
+```java
+public class UserService {
+    private UserRepository userRepository;
+
+    public UserService() {
+        userRepository = new UserRepository();
+    }
+}
+```
+With dependency injection, we can instead define the dependency in a configuration file or annotation:
+```java
+@Configuration
+public class AppConfig {
+    @Bean
+    public UserRepository userRepository() {
+        return new UserRepository();
+    }
+
+    @Bean
+    public UserService userService() {
+        return new UserService(userRepository());
+    }
+}
+```
+In this example, we've defined a UserRepository bean and a UserService bean, which has a constructor that takes a UserRepository parameter. The userService() method uses the userRepository() method to create a UserRepository bean and pass it to the UserService constructor.
+
+When we run our application, the Spring container will create both beans and inject the UserRepository instance into the UserService. This allows us to write more modular and testable code, since we can easily swap out dependencies or mock them for testing purposes.
+
+
+## Another Example how to implement Dependency Injection using Spring in Java:
+
+Let's assume we have a Student class with a StudentService class that depends on it. To use dependency injection with Spring, we can define a bean for StudentService that has a reference to the Student bean, like this:
+
+```java
+// Student.java
+public class Student {
+    private String name;
+    private int age;
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getters and setters
+}
+
+// StudentService.java
+public class StudentService {
+    private Student student;
+
+    public StudentService(Student student) {
+        this.student = student;
+    }
+
+    public void printStudentDetails() {
+        System.out.println("Name: " + student.getName());
+        System.out.println("Age: " + student.getAge());
+    }
+}
+
+// AppConfig.java
+@Configuration
+public class AppConfig {
+    @Bean
+    public Student student() {
+        return new Student("John Doe", 20);
+    }
+
+    @Bean
+    public StudentService studentService() {
+        return new StudentService(student());
+    }
+}
+
+// Main.java
+public class Main {
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        StudentService studentService = context.getBean(StudentService.class);
+        studentService.printStudentDetails();
+    }
+}
+```
+In this example, we define two beans in the AppConfig class: Student and StudentService. The StudentService bean has a constructor that takes a Student parameter, which is passed to it by Spring when it creates the bean.
+
+In the Main class, we create an instance of ApplicationContext using the AnnotationConfigApplicationContext class, passing in the AppConfig class as a parameter. We then use the getBean method of the ApplicationContext to retrieve an instance of the StudentService bean, which we can then use to call the printStudentDetails method.
+
+When we run the Main class, the output will be:
+```java
+Name: John Doe
+Age: 20
+```
+
