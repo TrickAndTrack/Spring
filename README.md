@@ -494,3 +494,90 @@ Car is driving...
 > **_Very IMP Note:_**  Constructor-based DI fixes the order in which the dependencies need to be injected. 
 
 > Setter-based DI helps us to inject the dependency only when it is required
+
+
+# Spring - Beans Auto-Wiring
+Beans Auto-wiring is a mechanism to automatically wire the dependencies of a bean by Spring container without any manual intervention. In other words, it is a way for Spring to resolve the dependencies automatically.
+
+Beans Auto-wiring can be used to eliminate the need for manual configuration in certain cases, which can save time and reduce errors. It is particularly useful when you have a large number of dependencies that need to be wired together, as it can be cumbersome to configure each one manually.
+
+There are several ways to configure Beans Auto-wiring in Spring:
+
+- ByName: This mode of auto-wiring matches the name of the bean with the name of the property in the class.
+
+- ByType: This mode of auto-wiring matches the type of the bean with the type of the property in the class.
+
+- Constructor: This mode of auto-wiring matches the arguments of the constructor with the beans that have the same type.
+
+- Autodetect: This mode of auto-wiring first tries to use the ByType mode of auto-wiring, and if that fails, it uses the ByName mode.
+
+# Example of Beans Auto-wiring in Spring using the ByType mode
+
+```java
+// Car.java
+public class Car {
+    private Engine engine;
+    private Transmission transmission;
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+    public void setTransmission(Transmission transmission) {
+        this.transmission = transmission;
+    }
+
+    public void drive() {
+        engine.start();
+        transmission.shiftGear();
+        System.out.println("Car is driving...");
+    }
+}
+
+// Engine.java
+public class Engine {
+    public void start() {
+        System.out.println("Engine is started.");
+    }
+}
+
+// Transmission.java
+public class Transmission {
+    public void shiftGear() {
+        System.out.println("Transmission is shifting gear.");
+    }
+}
+
+<!-- applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="car" class="com.example.Car" autowire="byType"/>
+
+    <bean id="engine" class="com.example.Engine"/>
+    <bean id="transmission" class="com.example.Transmission"/>
+
+</beans>
+
+// Main.java
+public class Main {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        Car car = context.getBean("car", Car.class);
+        car.drive();
+        ((ClassPathXmlApplicationContext) context).close();
+    }
+}
+```
+
+In this example, we have defined a Car class, which has two dependencies: Engine and Transmission. We have also defined beans for each of these dependencies in the applicationContext.xml file.
+
+
+We have then set the autowire attribute to byType in the car bean definition. This tells Spring to automatically wire the Engine and Transmission dependencies by matching their types with the types of the properties in the Car class.
+
+
+In the Main class, we retrieve the Car bean from the Spring container and call the drive() method on it.
+
+- This shows that the Car object has been successfully created and its dependencies have been auto-wired using the ByType mode of auto-wiring.
