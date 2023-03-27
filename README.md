@@ -173,6 +173,7 @@ public class Main {
 ```
 
 This code loads the Spring configuration file using a ClassPathXmlApplicationContext, gets the person bean from the application context, and calls its sayHello() method. The output should be:
+
 ```java
 Hello, my name is John Doe and I am 30 years old.
 
