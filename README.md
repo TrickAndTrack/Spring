@@ -110,3 +110,73 @@ public class ApplicationContextExample {
 In this example, we use the ClassPathXmlApplicationContext to create an IoC container from an XML file containing the bean definitions. We then retrieve an instance of the MyBean class from the container using the getBean() method.
 
 Both examples demonstrate the basic usage of IoC containers in Spring. The main difference between the two is that the BeanFactory provides lazy initialization of beans, while the ApplicationContext provides eager initialization of beans by default.
+
+> **_NOTE:_**  spring -> IOC for that we need to create manually. 
+Advance of spring -> Spring MVC-> IOC was converted in one line means in the form of annotation.
+
+
+# Spring - IoC Containers
+In the Spring framework, the IOC container is responsible to inject the dependency. We provide metadata to the IOC container either by XML file or annotation. (Only we need to show BEAN and CONFIG. FILE to the container)
+The Spring IoC container makes use of Java POJO classes and configuration metadata to produce a fully configured and executable system or application.
+
+## example of using an IoC container in Spring :
+
+we have a class Person that we want to create and configure using Spring's IoC container:
+```java
+public class Person {
+   private String name;
+   private int age;
+   
+   public Person(String name, int age) {
+       this.name = name;
+       this.age = age;
+   }
+   
+   public void sayHello() {
+       System.out.println("Hello, my name is " + name + " and I am " + age + " years old.");
+   }
+}
+
+```
+
+We can create an instance of Person and set its properties using the following Spring configuration file:
+```java
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+   
+   <bean id="person" class="com.example.Person">
+      <constructor-arg value="John Doe" />
+      <constructor-arg value="30" />
+   </bean>
+   
+</beans>
+
+```
+
+This configuration file defines a bean with the id person that is an instance of the Person class, with its name property set to "John Doe" and its age property set to 30.
+
+To load and use this bean in our Java code, we can create a ApplicationContext object and use it to get the Person bean:
+```java
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Main {
+   public static void main(String[] args) {
+      ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+      Person person = (Person) context.getBean("person");
+      person.sayHello();
+   }
+}
+```
+
+This code loads the Spring configuration file using a ClassPathXmlApplicationContext, gets the person bean from the application context, and calls its sayHello() method. The output should be:
+```java
+Hello, my name is John Doe and I am 30 years old.
+
+```
+
+
+> **_Note:_** The ApplicationContext includes all functionality of the BeanFactory, It is generally recommended over BeanFactory
