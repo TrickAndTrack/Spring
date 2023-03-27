@@ -405,4 +405,92 @@ That's it! This is how you can use Setter-based Dependency Injection in Java usi
 # Example in Annotation
 Create the dependency class:
 
+```java
+// Car.java
+public class Car {
+    private Engine engine;
+    private Transmission transmission;
 
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+    public void setTransmission(Transmission transmission) {
+        this.transmission = transmission;
+    }
+
+    public void drive() {
+        engine.start();
+        transmission.shiftGear();
+        System.out.println("Car is driving...");
+    }
+}
+
+// Engine.java
+public class Engine {
+    public void start() {
+        System.out.println("Engine is started.");
+    }
+}
+
+// Transmission.java
+public class Transmission {
+    public void shiftGear() {
+        System.out.println("Transmission is shifting gear.");
+    }
+}
+
+// AppConfig.java
+@Configuration
+@ComponentScan(basePackages = "com.example")
+public class AppConfig {
+    @Bean
+    public Car car() {
+        Car car = new Car();
+        car.setEngine(engine());
+        car.setTransmission(transmission());
+        return car;
+    }
+
+    @Bean
+    public Engine engine() {
+        return new Engine();
+    }
+
+    @Bean
+    public Transmission transmission() {
+        return new Transmission();
+    }
+}
+
+// Main.java
+public class Main {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        Car car = context.getBean(Car.class);
+        car.drive();
+        context.close();
+    }
+}
+```
+
+In this example, we have a Car class that has two dependencies: Engine and Transmission. We declare two setter methods to inject these dependencies.
+
+We can then define our beans and their dependencies in a configuration class, like this:
+
+@Configuration annotation marks this class as a configuration class.
+@ComponentScan annotation is used to scan for components in the specified base package.
+@Bean annotation is used to define a bean of type Car, Engine, and Transmission.
+In the Main class, we use the AnnotationConfigApplicationContext to load the configuration and retrieve the Car bean. We then call the drive() method on the Car object to drive the car.
+
+When we run the application, we get the following output:
+
+```java
+Engine is started.
+Transmission is shifting gear.
+Car is driving...
+```
+
+> **_Very IMP Note:_**  Constructor-based DI fixes the order in which the dependencies need to be injected. 
+
+> Setter-based DI helps us to inject the dependency only when it is required
