@@ -335,3 +335,74 @@ public class AppConfig {
 
 ```
 
+#  Spring Setter-based Dependency Injection
+Setter-based Dependency Injection is a type of Dependency Injection design pattern in which the dependencies of a class are injected using setter methods instead of constructor arguments. This pattern is commonly used in object-oriented programming, especially in the context of the Spring Framework in Java.
+
+In Setter-based Dependency Injection, the class that requires dependencies provides a public method for each dependency that it requires. These methods, typically named with the prefix "set", are called "setter methods". The dependency injection framework calls these setter methods to provide the required dependencies to the class.
+
+## how to achieve Setter-based Dependency Injection in xml and Annoation.
+# Example in xml
+
+Create the dependency class:
+```java
+public class UserRepository {
+    // implementation
+}
+```
+Create the dependent class with the setter method for the dependency injection:
+
+```java
+public class UserService {
+    private UserRepository userRepository;
+
+    // Setter method for dependency injection
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // Methods that use userRepository
+}
+```
+
+Create the XML configuration file (e.g., applicationContext.xml) that specifies the beans to be injected and their dependencies:
+
+```java
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Bean definition for the dependent class -->
+    <bean id="userService" class="com.example.UserService">
+        <property name="userRepository" ref="userRepository" />
+    </bean>
+
+    <!-- Bean definition for the dependency class -->
+    <bean id="userRepository" class="com.example.UserRepository" />
+</beans>
+```
+
+In the above XML configuration file, we define two beans - userService and userRepository. We set the userRepository bean as a dependency for the userService bean using the <property> tag.
+
+
+Use the dependent object in the application:
+
+```java
+public class MyApp {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        UserService userService = (UserService) context.getBean("userService");
+        // use userService object
+    }
+}
+```
+In the above code snippet, we retrieve the userService object from the Spring application context and use it as required.
+
+
+
+That's it! This is how you can use Setter-based Dependency Injection in Java using XML format.
+
+# Example in Annotation
+Create the dependency class:
+
+
