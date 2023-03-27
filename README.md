@@ -581,3 +581,62 @@ We have then set the autowire attribute to byType in the car bean definition. Th
 In the Main class, we retrieve the Car bean from the Spring container and call the drive() method on it.
 
 - This shows that the Car object has been successfully created and its dependencies have been auto-wired using the ByType mode of auto-wiring.
+
+# example of Beans Auto-wiring in Spring using the ByName mode:
+Main Diffrance is
+``java
+<!-- applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="car" class="com.example.Car" autowire="byName">
+
+        <property name="engine">
+            <ref bean="engine" />
+        </property>
+
+        <property name="transmission">
+            <ref bean="transmission" />
+        </property>
+
+    </bean>
+
+    <bean id="engine" class="com.example.Engine"/>
+    <bean id="transmission" class="com.example.Transmission"/>
+
+</beans>
+```
+
+ we have defined a Car class, which has two dependencies: Engine and Transmission. We have also defined beans for each of these dependencies in the applicationContext.xml file.
+
+
+We have then set the autowire attribute to byName in the car bean definition. This tells Spring to automatically wire the Engine and Transmission dependencies by matching their names with the names of the properties in the Car class.
+
+
+In the car bean definition, we have also defined two <property> elements, each with a name attribute that matches the name of a property in the Car class, and a <ref> element that refers to the corresponding bean.
+
+
+In the Main class, we retrieve the Car bean from the Spring container and call the drive() method on it.
+
+This shows that the Car object has been successfully created and its dependencies have been auto-wired using the ByName mode of auto-wiring.
+
+# example of Beans Auto-wiring in Spring using the Constructor mode:
+```java
+<!-- applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="car" class="com.example.Car" autowire="constructor"/>
+
+    <bean id="engine" class="com.example.Engine"/>
+    <bean id="transmission" class="com.example.Transmission"/>
+
+</beans>
+```
+
+We have set the auto wire attribute to the constructor in the car bean definition. This tells Spring to automatically wire the dependencies using the constructor of the Car class.
+
